@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+# Changes laptop GPU between intel and nvidia graphics and logs out of xfce.
+
+
+GPU="$(prime-select query)"
+
+if [ "$#" -ne 1 ]; then
+    echo "Current GPU: $GPU"
+    exit 1
+fi
+
+
+if [ "$1" = "n" ] || [ "$1" = "nvidia" ] && [ "$GPU" = "intel" ]; then
+    sudo prime-select nvidia
+    xfce4-session-logout -l
+
+elif [ "$1" = "n" ] || [ "$1" = "nvidia" ] && [ "$GPU" = "nvidia" ]; then
+    echo "Current GPU already is $GPU"
+
+elif [ "$1" = "i" ] || [ "$1" = "intel" ] && [ "$GPU" = "nvidia" ]; then
+    sudo prime-select nvidia
+    xfce4-session-logout -l
+
+elif [ "$1" = "i" ] || [ "$1" = "intel" ] && [ $GPU = "intel" ]; then
+    echo "Current GPU already is $GPU"
+
+else
+    echo "Argument should be 'intel' or 'nvidia'."
+fi
